@@ -1,0 +1,62 @@
+extends layout
+
+block body
+  header(ng-controller='AppCtrl')
+    .navbar
+      .navbar-inner
+        .container-fluid
+          a.brand(href="#")
+            i.icon-heart-empty
+            span Contact
+          .collapse.nav-collapse
+            ul.nav
+              li
+                a(href="contact/1") Contact
+            ul.nav.pull-right
+              li.dropdow.dark.user-menu
+                a.dropdown-toggle(data-toggle="dropdown", href="#")
+                  span.user-name {{usernmae}}
+                  b.caret
+                ul.dropdown-menu
+                  li
+                    a(href="#")
+                      i.icon-signout
+                      | Sign out
+            ul.nav.pull-right
+              li.only-icon
+                a.btn-link(ng-click="open_create_contact_dlg()")
+                  i.icon-plus
+            form.navbar-search.pull-right.hidden-phone
+              div(style="margin:0;padding:0;display:inline")
+                input(name="utf8", type="hidden", value="&#x2713;")
+              button.btn.btn-link.icon-search(type='submit')
+              input.search-query.span2(type='text', placeholder='Search...',id="q_header", name="q",autocomplete="off")
+      div(modal="shouldBeOpen", close="close_create_contact_dlg()", options="opts")
+        .modal-header
+          button.close(data-dismiss="modal", type="button", ng-click="close_create_contact_dlg()") &times;
+          h3 New Contact
+        .modal-body.row-fluid
+          .span12.text-center
+            .span5
+              a.btn.btn-large(ng-click="open_person_dlg()")
+                i.icon-user
+            .span5
+              a.btn.btn-large(ng-click="open_org_dlg()")
+                i.icon-briefcase
+  .container-fluid.content
+    div
+      div(ng-view)
+
+  script(src='js/lib/angular/angular.js')
+  script(src='js/app.js')
+  script(src='js/controllers/app_controller.js')
+  script(src='js/controllers/contact_controller.js')
+  script(src='js/services/global_utils.js')
+  script(src='js/directives/ui-bootstrap-0.5.0.js')
+  script(src='js/lib/jquery/jquery-2.0.3.min.js')
+  script(src='js/lib/bootstrap/bootstrap.min.js')
+  script(src='js/lib/plugins/flot/excanvas.js')
+  script(src='js/lib/jquery_ui/jquery-ui.min.js')
+  script(src='js/lib/plugins/fileupload/jquery.iframe-transport.min.js')
+  script(src='js/lib/plugins/fileupload/jquery.fileupload.min.js')
+  script(src='js/directives/imageupload.js')

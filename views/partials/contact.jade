@@ -1,0 +1,116 @@
+.row-fluid
+  .span12
+    .span3
+      .box-content
+        img(alt="230x230&amp;text=photo", ng-src="images/photos/{{primarypicname}}")
+    .span9.box
+      .box-header(ng-hide="firstname == '' && lastname == ''")
+        .title
+          h2 {{firstname}} {{lastname}}
+        .actions
+          a.btn.btn-link.edit(ng-click="open_person_dlg(false)")
+            i.icon-pencil
+          a.btn.btn-link.remove(ng-click="delete_person()")
+            i.icon-remove
+      .box-header(ng-hide="orgname == ''")
+        .title
+          h2 {{orgname}}
+        .actions
+          a.btn.btn-link.edit(ng-click="open_org_dlg(false)")
+            i.icon-pencil
+          a.btn.btn-link.remove(ng-click="delete_org()")
+            i.icon-remove
+      .box-header
+        .title
+          | Pictures
+        .actions
+          a.btn.btn-link(ng-click="open_img_dlg()")
+            i.icon-plus
+      .box-header(ng-repeat="row in prows")
+        .span3(ng-repeat="item in pcols", ng-show="pictures[$parent.$index*4 + $index]")
+          .box-header
+            img(ng-src="images/photos/{{pictures[$parent.$index*4 + $index].picname}}",ng-click="setprimarypic(pictures[$parent.$index*4 + $index].id)")
+      .box-header
+        .title
+          | Emails
+        .actions
+          a.btn.btn-link(ng-click="open_add_email_dlg()")
+            i.icon-plus
+      .box-header
+        .span6
+          .box-content
+            | {{primaryemailtxt}}
+      .box-header(ng-repeat="row in rows")
+        .span6(ng-repeat="item in cols", ng-show="emails[$parent.$index*2 + $index]")
+          .box-header
+            .title
+              | {{emails[$parent.$index*2 + $index].email}}
+            .actions
+              a.btn.btn-link(ng-click="setprimaryemail(emails[$parent.$index*2 + $index].id)")
+                i.icon-star
+              a.btn.btn-link(ng-click="removeemail(emails[$parent.$index*2 + $index].id)")
+                i.icon-remove
+      .box-header
+        .title
+          | Summary
+        .actions
+          a.btn.btn-link.edit(ng-click="open_summary_dlg()")
+            i.icon-pencil
+      .box-content
+        | {{summary}}
+    div(modal="isImgDlgOpen", close="close_img_dlg()", options="opts")
+      .modal-header
+        button.close(data-dismiss="modal", type="button", ng-click="close_img_dlg()") &times;
+        h3 Image Upload
+      .modal-body.row-fluid
+        .span12.text-center
+          div(drag-drop-upload, user-id='userid', submit-url='/api/upload/')
+    div(modal="isSummaryDlgOpen", close="close_summary_dlg()", options="opts")
+      .modal-header
+        button.close(data-dismiss="modal", type="button", ng-click="close_summary_dlg()") &times;
+        h3 Edit Summary
+      .modal-body.row-fluid
+        .span12.text-center
+          form.form.form-horizontal(name="summary_form", style='margin-bottom: 0;', novalidate)
+            textarea(rows=8, cols=30, ng-model="txtsummary")
+      .modal-footer
+        a.btn.btn-primary(ng-click="save_summary()") Save
+    div(modal="isEmailDlgOpen", close="close_add_email_dlg()", options="opts")
+      .modal-header
+        button.close(data-dismiss="modal", type="button", ng-click="close_add_email_dlg()") &times;
+        h3 Add Email
+      .modal-body.row-fluid
+        .span12.text-center
+          form.form.form-horizontal(name="email_form", style='margin-bottom: 0;', novalidate)
+            input(data-rule-email='true', data-rule-required='true', id='new_email', name='new_email', placeholder='E-mail', type='email', ng-model="email", required)
+            span.text-red(ng-show="email_form.new_email.$error.required") Required!
+            span.text-red(ng-show="email_form.new_email.$error.email") No valid email!
+      .modal-footer
+        a.btn.btn-primary(ng-disabled="email_form.$invalid", ng-click="save_email()") Create
+    div(modal="isPersonDlgOpen", close="close_person_dlg()", options="opts")
+      .modal-header
+        button.close(data-dismiss="modal", type="button", ng-click="close_person_dlg()") &times;
+        h3 {{title}}
+      .modal-body.row-fluid
+        .span12.text-center
+          form.form.form-horizontal(name="person_form", style='margin-bottom: 0;', novalidate)
+            .control-group
+              input(data-rule-email='true', data-rule-required='true', id='first_name', name='first_name', placeholder='First Name', type='text', ng-model="first_name", required)
+              span.text-red(ng-show="person_form.first_name.$error.required") Required!
+            .control-group
+              input(data-rule-email='true', data-rule-required='true', id='last_name', name='last_name', placeholder='Last Name', type='text', ng-model="last_name", required)
+              span.text-red(ng-show="person_form.last_name.$error.required") Required!
+      .modal-footer
+        a.btn.btn-primary(ng-disabled="person_form.$invalid", ng-click="save_person()") {{button_title}}
+    div(modal="isOrgDlgOpen", close="close_org_dlg()", options="opts")
+      .modal-header
+        button.close(data-dismiss="modal", type="button", ng-click="close_org_dlg()") &times;
+        h3 {{title}}
+      .modal-body.row-fluid
+        .span12.text-center
+          form.form.form-horizontal(name="org_form", style='margin-bottom: 0;', novalidate)
+            .control-group
+              input(data-rule-email='true', data-rule-required='true', id='org_name', name='org_name', placeholder='Organization', type='text', ng-model="org_name", required)
+              span.text-red(ng-show="org_form.org_name.$error.required") Required!
+      .modal-footer
+        a.btn.btn-primary(ng-disabled="org_form.$invalid", ng-click="save_organization()") {{button_title}}
